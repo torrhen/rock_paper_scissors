@@ -1,0 +1,1 @@
+The project will allow a user to play "rock-paper-scissors" against a convolutional neural network (CNN) with OpenCV and Tensorflow.
