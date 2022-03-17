@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from images import read_image_data
 from images import get_image_file_paths_from
 
+all_labels = ['rock', 'paper', 'scissors']
+
 # training data
 # read training image data from folder and store in numpy array
 train_r_X = read_image_data(get_image_file_paths_from("../res/data/train/rock/"))
@@ -54,5 +56,5 @@ test_a_Y = tf.gather(test_a_Y, indices_sh)
 
 # display the first random training image and corresponding target label
 plt.imshow(train_a_X[0], cmap='gray')
-print(train_a_Y[0])
+print(all_labels[int(train_a_Y[0])])
 plt.show()
