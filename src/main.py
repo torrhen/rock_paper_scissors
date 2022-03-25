@@ -16,9 +16,9 @@ train_r_X = tf.convert_to_tensor(train_r_X)
 train_p_X = tf.convert_to_tensor(train_p_X)
 train_s_X = tf.convert_to_tensor(train_s_X)
 # generate training target labels
-train_r_Y = tf.ones([train_r_X.shape[0], 1]) * 0.0
-train_p_Y = tf.ones([train_p_X.shape[0], 1]) * 1.0
-train_s_Y = tf.ones([train_s_X.shape[0], 1]) * 2.0
+train_r_Y = tf.ones([train_r_X.shape[0], 1], dtype=tf.int32) * 0
+train_p_Y = tf.ones([train_p_X.shape[0], 1], dtype=tf.int32) * 1
+train_s_Y = tf.ones([train_s_X.shape[0], 1], dtype=tf.int32) * 2
 # concat training images into a single tensor
 train_a_X = tf.concat([train_r_X, train_p_X, train_s_X], 0)
 # concat training target labels into a single tensor
@@ -40,9 +40,9 @@ test_r_X = tf.convert_to_tensor(test_r_X)
 test_p_X = tf.convert_to_tensor(test_p_X)
 test_s_X = tf.convert_to_tensor(test_s_X)
 # generate test target labels
-test_r_Y = tf.ones([test_r_X.shape[0], 1]) * 0.0
-test_p_Y = tf.ones([test_p_X.shape[0], 1]) * 1.0
-test_s_Y = tf.ones([test_s_X.shape[0], 1]) * 2.0
+test_r_Y = tf.ones([test_r_X.shape[0], 1], dtype=tf.int32) * 0
+test_p_Y = tf.ones([test_p_X.shape[0], 1], dtype=tf.int32) * 1
+test_s_Y = tf.ones([test_s_X.shape[0], 1], dtype=tf.int32) * 2
 # concat test images into a single tensor
 test_a_X = tf.concat([test_r_X, test_p_X, test_s_X], 0)
 # concat test target labels into a single tensor
