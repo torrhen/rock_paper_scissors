@@ -3,11 +3,8 @@ import numpy as np
 import glob
 
 def apply_edge_detection(image):
-    # low_threshold = 255/3
-    # high_threshold = 255
     image = cv.GaussianBlur(image, (7,7), 0)
     return cv.Sobel(src=image, ddepth=-1, dx=1, dy=1, ksize=7)
-    # return cv.Canny(image, low_threshold, high_threshold)
 
 def resize_and_normalize(image):
     new_width = 75
