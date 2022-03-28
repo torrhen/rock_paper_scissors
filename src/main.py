@@ -92,3 +92,8 @@ plt.ylabel('Accuracy')
 plt.ylim([0.5, 1])
 plt.legend(loc='lower right')
 plt.show()
+# predict the target labels for unseen images and the confidence
+predictions = cnn.predict(val_X)
+for i in predictions:
+	score = i
+	print("This image is likely to be {} [{:.2f}% confidence]".format(all_labels[np.argmax(score)], 100 * np.max(score)))
