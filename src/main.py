@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from images import read_image_data
 from images import get_image_file_paths_from
+from tensorflow.keras import layers, models
 
 all_labels = ['rock', 'paper', 'scissors']
 
@@ -64,3 +65,20 @@ val_X = read_image_data(get_image_file_paths_from("../res/data/validation/"))
 # convert to tensor
 val_X = tf.convert_to_tensor(val_X)
 
+# train cnn
+cnn = models.Sequential()
+cnn.add(layers.Conv2D(16, (3, 3), activation='relu', input_shape=(75, 75, 1)))
+cnn.add(layers.MaxPooling2D((2, 2)))
+cnn.add(layers.Conv2D(48, (3, 3), activation='relu'))
+cnn.add(layers.MaxPooling2D((2, 2)))
+cnn.add(layers.Conv2D(84, (3, 3), activation='relu'))
+cnn.add(layers.MaxPooling2D((2, 2)))
+cnn.add(layers.Flatten())
+cnn.add(tf.keras.layers.Dropout(0.1))
+cnn.add(layers.Dense(60, activation='relu'))
+cnn.add(tf.keras.layers.Dropout(0.1))
+cnn.add(layers.Dense(10, activation='relu'))
+cnn.add(layers.Dense(3, activation='softmax'))
+cnn.summary()
+
+cnn.compile(optimizer='sgd', loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False), metrics=['accuracy'])
