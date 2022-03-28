@@ -8,23 +8,6 @@ import sys
 import random
 from images import *
 
-
-
-# class_names = ["rock", "paper", "scissors"]
-
-# validation_image_data = read_image_data(get_image_file_paths_from("../res/data/validation/"))
-# validation_data = Dataset()
-# validation_data.data = tf.convert_to_tensor(validation_image_data)
-
-# predictions = model.predict(validation_data.data)
-
-# for i in predictions:
-# 	score = i
-# 	print(
-#     "This image most likely belongs to {} with a {:.2f} percent confidence."
-#     .format(class_names[np.argmax(score)], 100 * np.max(score))
-# 	)
-
 # isCameraOpen = False
 
 # def draw_view_frame(video_frame):
@@ -106,44 +89,3 @@ from images import *
         #     isCameraOpen = False
 
         #     return region
-
-
-# actions = ['Rock', 'Paper', 'Scissors']
-# # predict the video frame using the CNN and store the result as the player move.
-# move = model.predict(x)
-# player_move = move[0]
-# # select computer move with uniform randomness
-# computer_move = random.choice(actions)
-
-# print("#########################")
-# print("Player move:\t" + player_move)
-# print("#########################")
-# print()
-# print("#########################")
-# print("Computer move:\t" + computer_move)
-# print("#########################")
-# print()
-# print("#########################")
-# # play the game and decide the winner
-# if computer_move == "Rock":
-#     if player_move == "Rock":
-#         print("The game is a draw!")
-#     elif player_move == "Scissors":
-#         print("The computer wins!")
-#     elif player_move == "Paper":
-#         print("The player wins!")
-# elif computer_move == "Paper":
-#     if player_move == "Paper":
-#         print("The game is a draw!")
-#     elif player_move == "Rock":
-#         print("The computer wins!")
-#     elif player_move == "Scissors":
-#         print("The player wins!")
-# elif computer_move == "Scissors":
-#     if player_move == "Scissors":
-#         print("The game is a draw!")
-#     elif player_move == "Paper":
-#         print("The computer wins!")
-#     elif player_move == "Rock":
-#         print("The player wins!")
-# print("#########################")
