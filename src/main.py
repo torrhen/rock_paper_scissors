@@ -97,3 +97,50 @@ predictions = cnn.predict(val_X)
 for i in predictions:
 	score = i
 	print("This image is likely to be {} [{:.2f}% confidence]".format(all_labels[np.argmax(score)], 100 * np.max(score)))
+
+# 2. open default camera
+
+# 3. process user image input
+
+# 4. predict the label of the user input using cnn
+# default player move
+player_move = 'rock'
+
+# 5. select computers random move
+# default computer move
+computer_move = 'scissors'
+
+# 6. play game and decide winner
+# print each player move
+print("-------------------------")
+print("Player move:\t" + player_move)
+print("-------------------------")
+print()
+print("-------------------------")
+print("Computer move:\t" + computer_move)
+print("-------------------------")
+print()
+print("-------------------------")
+# print the outcome of the game
+if computer_move == "rock":
+    if player_move == "rock":
+        print("The game is a draw!")
+    elif player_move == "scissors":
+        print("The computer wins!")
+    elif player_move == "paper":
+        print("The player wins!")
+elif computer_move == "paper":
+    if player_move == "paper":
+        print("The game is a draw!")
+    elif player_move == "rock":
+        print("The computer wins!")
+    elif player_move == "scissors":
+        print("The player wins!")
+elif computer_move == "scissors":
+    if player_move == "scissors":
+        print("The game is a draw!")
+    elif player_move == "paper":
+        print("The computer wins!")
+    elif player_move == "rock":
+        print("The player wins!")
+print("-------------------------")
