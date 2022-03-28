@@ -54,7 +54,13 @@ indices_sh = tf.random.shuffle(indices)
 test_a_X = tf.gather(test_a_X, indices_sh)
 test_a_Y = tf.gather(test_a_Y, indices_sh)
 
-# display the first random training image and corresponding target label
-plt.imshow(train_a_X[0], cmap='gray')
-print(all_labels[int(train_a_Y[0])])
-plt.show()
+# # display the first random training image and corresponding target label
+# plt.imshow(train_a_X[0], cmap='gray')
+# print(all_labels[int(train_a_Y[0])])
+# plt.show()
+
+# validation data
+val_X = read_image_data(get_image_file_paths_from("../res/data/validation/"))
+# convert to tensor
+val_X = tf.convert_to_tensor(val_X)
+
