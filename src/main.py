@@ -82,3 +82,13 @@ cnn.add(layers.Dense(3, activation='softmax'))
 cnn.summary()
 
 cnn.compile(optimizer='sgd', loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False), metrics=['accuracy'])
+# train cnn
+results = cnn.fit(train_a_X, train_a_Y, epochs=20, validation_data=(test_a_X, test_a_Y))
+# plot the classification accuracy of cnn for each epoch
+plt.plot(results.history['accuracy'], label='Training')
+plt.plot(results.history['val_accuracy'], label = 'Test')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.ylim([0.5, 1])
+plt.legend(loc='lower right')
+plt.show()
