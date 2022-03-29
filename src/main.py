@@ -1,5 +1,6 @@
 import tensorflow as tf
 import numpy as np
+import cv2 as cv
 import matplotlib.pyplot as plt
 from images import read_image_data
 from images import get_image_file_paths_from
@@ -99,6 +100,55 @@ for i in predictions:
 	print("This image is likely to be {} [{:.2f}% confidence]".format(all_labels[np.argmax(score)], 100 * np.max(score)))
 
 # 2. open default camera
+
+def draw_view_frame(video_frame):
+    # dimensions of the frame to draw
+    VIEW_FRAME_WIDTH = 300
+    VIEW_FRAME_HEIGHT = 300
+    VIEW_FRAME_THICKNESS = 2
+    VIEW_FRAME_COLOUR = (0, 255, 0) # green
+
+    video_frame_width = video_frame.shape[0]
+    video_frame_height = video_frame.shape[1]
+
+    # calculate the top-left and bottom right coordinates of the view frame
+    x1y1 = (int((video_frame_width - VIEW_FRAME_WIDTH) / 2) - VIEW_FRAME_THICKNESS, int((video_frame_height - VIEW_FRAME_HEIGHT) / 2) - VIEW_FRAME_THICKNESS)
+    x2y2 = (int(video_frame_width - x1y1[0]), int(video_frame_height - x1y1[1]))
+
+    # draw view frame on top of the video frame
+    video_frame = cv.rectangle(video_frame, x1y1, x2y2, VIEW_FRAME_COLOUR, VIEW_FRAME_THICKNESS)
+    return video_frame
+
+isCameraOpen = False
+# dimensions of each video frame
+VIDEO_FRAME_WIDTH = 800
+VIDEO_FRAME_HEIGHT = 600
+
+# open default camera using the default API
+camera = cv.VideoCapture(0)
+if not camera.isOpened():
+    # exit program if camera cannot be opened
+    sys.exit("Failed to open camera.")
+
+isCameraOpen = True
+while isCameraOpen:
+    # wait for a new frame from camera and store it into 'frame'
+    ret, frame = camera.read()
+    # check if frame was read
+    if frame.all() == None:
+        sys.exit("Failed to read video frame")
+    
+    # resize video frame
+    frame = cv.resize(frame, (VIDEO_FRAME_WIDTH, VIDEO_FRAME_HEIGHT))
+    # draw a centred, 300 x 300 view frame onto each video frame
+    frame = draw_view_frame(frame)
+    # display video
+    cv.namedWindow("Live", cv.WINDOW_AUTOSIZE)
+    cv.imshow("Live", frame)
+    # close camera if ESC key is pressed
+    if cv.waitKey(5) == 27:
+        camera.release()
+        isCameraOpen = False
 
 # 3. process user image input
 
