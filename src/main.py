@@ -100,7 +100,6 @@ for i in predictions:
 	print("This image is likely to be {} [{:.2f}% confidence]".format(all_labels[np.argmax(score)], 100 * np.max(score)))
 
 # 2. open default camera
-
 def draw_view_frame(video_frame):
     # dimensions of the frame to draw
     VIEW_FRAME_WIDTH = 300
@@ -108,12 +107,17 @@ def draw_view_frame(video_frame):
     VIEW_FRAME_THICKNESS = 2
     VIEW_FRAME_COLOUR = (0, 255, 0) # green
 
-    video_frame_width = video_frame.shape[0]
-    video_frame_height = video_frame.shape[1]
+    video_frame_width = video_frame.shape[1]
+    video_frame_height = video_frame.shape[0]
 
-    # calculate the top-left and bottom right coordinates of the view frame
-    x1y1 = (int((video_frame_width - VIEW_FRAME_WIDTH) / 2) - VIEW_FRAME_THICKNESS, int((video_frame_height - VIEW_FRAME_HEIGHT) / 2) - VIEW_FRAME_THICKNESS)
-    x2y2 = (int(video_frame_width - x1y1[0]), int(video_frame_height - x1y1[1]))
+    # calculate the top-left coordinates of the view frame
+    x1 = ((video_frame_width - VIEW_FRAME_WIDTH) / 2) - VIEW_FRAME_THICKNESS
+    y1 = ((video_frame_height - VIEW_FRAME_HEIGHT)/2) - VIEW_FRAME_THICKNESS
+    x1y1 = (int(x1), int(y1))
+    # calculate the bottom-right coordinates of the view frame
+    x2 = video_frame_width - x1
+    y2 = video_frame_height - y1
+    x2y2 = (int(x2), int(y2))
 
     # draw view frame on top of the video frame
     video_frame = cv.rectangle(video_frame, x1y1, x2y2, VIEW_FRAME_COLOUR, VIEW_FRAME_THICKNESS)
