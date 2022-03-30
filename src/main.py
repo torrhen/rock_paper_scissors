@@ -4,6 +4,8 @@ import cv2 as cv
 import matplotlib.pyplot as plt
 from images import read_image_data
 from images import get_image_file_paths_from
+from images import apply_edge_detection
+from images import resize_and_normalize
 from tensorflow.keras import layers, models
 
 all_labels = ['rock', 'paper', 'scissors']
@@ -100,6 +102,23 @@ for i in predictions:
 	print("This image is likely to be {} [{:.2f}% confidence]".format(all_labels[np.argmax(score)], 100 * np.max(score)))
 
 # 2. open default camera
+
+def calculate_view_frame_position(video_frame_width, video_frame_height):
+    VIEW_FRAME_WIDTH = 300
+    VIEW_FRAME_HEIGHT = 300
+    VIEW_FRAME_THICKNESS = 2
+    # calculate the top-left coordinates of the view frame
+    x1 = ((video_frame_width - VIEW_FRAME_WIDTH) / 2) - VIEW_FRAME_THICKNESS
+    y1 = ((video_frame_height - VIEW_FRAME_HEIGHT) / 2) - VIEW_FRAME_THICKNESS
+    x1y1 = (int(x1), int(y1))
+    # calculate the bottom-right coordinates of the view frame
+    x2 = video_frame_width - x1
+    y2 = video_frame_height - y1
+    x2y2 = (int(x2), int(y2))
+
+    return x1y1, x2y2
+
+
 def draw_view_frame(video_frame):
     # dimensions of the frame to draw
     VIEW_FRAME_WIDTH = 300
@@ -110,14 +129,7 @@ def draw_view_frame(video_frame):
     video_frame_width = video_frame.shape[1]
     video_frame_height = video_frame.shape[0]
 
-    # calculate the top-left coordinates of the view frame
-    x1 = ((video_frame_width - VIEW_FRAME_WIDTH) / 2) - VIEW_FRAME_THICKNESS
-    y1 = ((video_frame_height - VIEW_FRAME_HEIGHT)/2) - VIEW_FRAME_THICKNESS
-    x1y1 = (int(x1), int(y1))
-    # calculate the bottom-right coordinates of the view frame
-    x2 = video_frame_width - x1
-    y2 = video_frame_height - y1
-    x2y2 = (int(x2), int(y2))
+    x1y1, x2y2 = calculate_view_frame_position(video_frame_width, video_frame_height)
 
     # draw view frame on top of the video frame
     video_frame = cv.rectangle(video_frame, x1y1, x2y2, VIEW_FRAME_COLOUR, VIEW_FRAME_THICKNESS)
@@ -145,16 +157,34 @@ while isCameraOpen:
     # resize video frame
     frame = cv.resize(frame, (VIDEO_FRAME_WIDTH, VIDEO_FRAME_HEIGHT))
     # draw a centred, 300 x 300 view frame onto each video frame
-    frame = draw_view_frame(frame)
+    frame_edit = draw_view_frame(frame)
     # display video
     cv.namedWindow("Live", cv.WINDOW_AUTOSIZE)
-    cv.imshow("Live", frame)
+    cv.imshow("Live", frame_edit)
     # close camera if ESC key is pressed
-    if cv.waitKey(5) == 27:
+    keypressed = cv.waitKey(5)
+    if keypressed == 27:
         camera.release()
         isCameraOpen = False
+    if keypressed == 32:
+        print("key pressed.")
+        x1y1, x2y2 = calculate_view_frame_position(VIDEO_FRAME_HEIGHT, VIDEO_FRAME_WIDTH)
+        region = frame[x1y1[0]+2:x2y2[0]-2, x1y1[1]+2:x2y2[1]-2]
+        # convert video frame region from colour to greyscale
+        region = cv.cvtColor(region, cv.COLOR_BGR2GRAY)
+        isCameraOpen = False
 
-# 3. process user image input
+        # 3. process user image input
+        x = apply_edge_detection(region)
+        x = resize_and_normalize(x)
+        cv.imshow("Live", x)
+        cv.waitKey(0)
+        # predict the label of the user input
+        x = tf.convert_to_tensor([x], 1)
+        pred = cnn.predict(x)
+        print(pred)
+        user_move = all_labels[np.argmax(pred)]
+        print(user_move)
 
 # 4. predict the label of the user input using cnn
 # default player move
