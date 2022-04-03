@@ -7,6 +7,7 @@ from images import get_image_file_paths_from
 from images import apply_edge_detection
 from images import resize_and_normalize
 from tensorflow.keras import layers, models
+import random
 
 all_labels = ['rock', 'paper', 'scissors']
 
@@ -179,16 +180,14 @@ while isCameraOpen:
         x = resize_and_normalize(x)
         cv.imshow("Live", x)
         cv.waitKey(0)
-        # predict the label of the user input
+        # 4. predict the label of the user input using cnn
         x = tf.convert_to_tensor([x], 1)
         pred = cnn.predict(x)
-        print(pred)
         user_move = all_labels[np.argmax(pred)]
-        print(user_move)
 
-# 4. predict the label of the user input using cnn
-# default player move
-player_move = 'rock'
+        # 5. select random computer move
+        computer_move = random.choice(all_labels)
+
 
 # 5. select computers random move
 # default computer move
