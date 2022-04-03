@@ -214,42 +214,12 @@ while isCameraOpen:
         # 5. select random computer move
         computer_move = random.choice(all_labels)
 
-
-# 5. select computers random move
-# default computer move
-computer_move = 'scissors'
-
-# 6. play game and decide winner
-# print each player move
-print("-------------------------")
-print("Player move:\t" + player_move)
-print("-------------------------")
-print()
-print("-------------------------")
-print("Computer move:\t" + computer_move)
-print("-------------------------")
-print()
-print("-------------------------")
-# print the outcome of the game
-if computer_move == "rock":
-    if player_move == "rock":
-        print("The game is a draw!")
-    elif player_move == "scissors":
-        print("The computer wins!")
-    elif player_move == "paper":
-        print("The player wins!")
-elif computer_move == "paper":
-    if player_move == "paper":
-        print("The game is a draw!")
-    elif player_move == "rock":
-        print("The computer wins!")
-    elif player_move == "scissors":
-        print("The player wins!")
-elif computer_move == "scissors":
-    if player_move == "scissors":
-        print("The game is a draw!")
-    elif player_move == "paper":
-        print("The computer wins!")
-    elif player_move == "rock":
-        print("The player wins!")
-print("-------------------------")
+        # 6. play game and decide winner
+        # print each player move
+        print("-------------------------")
+        print("Player move:\t" + user_move)
+        print("-------------------------\n")
+        print("-------------------------")
+        print("Computer move:\t" + computer_move)
+        print("-------------------------\n")
+        decide_winner(user_move, computer_move)
