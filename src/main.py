@@ -136,6 +136,32 @@ def draw_view_frame(video_frame):
     video_frame = cv.rectangle(video_frame, x1y1, x2y2, VIEW_FRAME_COLOUR, VIEW_FRAME_THICKNESS)
     return video_frame
 
+def decide_winner(user_move, computer_move):
+    # print the outcome of the game
+    print("-------------------------")
+    if computer_move == "rock":
+        if user_move == "rock":
+            print("The game is a draw!")
+        elif user_move == "scissors":
+            print("The computer wins!")
+        elif user_move == "paper":
+            print("The player wins!")
+    elif computer_move == "paper":
+        if user_move == "paper":
+            print("The game is a draw!")
+        elif user_move == "rock":
+            print("The computer wins!")
+        elif user_move == "scissors":
+            print("The player wins!")
+    elif computer_move == "scissors":
+        if user_move == "scissors":
+            print("The game is a draw!")
+        elif user_move == "paper":
+            print("The computer wins!")
+        elif user_move == "rock":
+            print("The player wins!")
+    print("-------------------------")
+
 isCameraOpen = False
 # dimensions of each video frame
 VIDEO_FRAME_WIDTH = 800
