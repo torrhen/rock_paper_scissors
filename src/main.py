@@ -113,8 +113,6 @@ for i in predictions:
 	score = i
 	print("This image is likely to be {} [{:.2f}% confidence]".format(all_labels[np.argmax(score)], 100 * np.max(score)))
 
-# 2. open default camera
-
 def calculate_view_frame_position(video_frame_width, video_frame_height):
     VIEW_FRAME_WIDTH = 300
     VIEW_FRAME_HEIGHT = 300
@@ -129,7 +127,6 @@ def calculate_view_frame_position(video_frame_width, video_frame_height):
     x2y2 = (int(x2), int(y2))
 
     return x1y1, x2y2
-
 
 def draw_view_frame(video_frame):
     # dimensions of the frame to draw
