@@ -8,6 +8,7 @@ from images import apply_edge_detection
 from images import resize_and_normalize
 from tensorflow.keras import layers, models
 import random
+import os.path
 
 all_labels = ['rock', 'paper', 'scissors']
 
@@ -69,33 +70,43 @@ val_X = read_image_data(get_image_file_paths_from("../res/data/validation/"))
 # convert to tensor
 val_X = tf.convert_to_tensor(val_X)
 
-# train cnn
-cnn = models.Sequential()
-cnn.add(layers.Conv2D(16, (3, 3), activation='relu', input_shape=(75, 75, 1)))
-cnn.add(layers.MaxPooling2D((2, 2)))
-cnn.add(layers.Conv2D(48, (3, 3), activation='relu'))
-cnn.add(layers.MaxPooling2D((2, 2)))
-cnn.add(layers.Conv2D(84, (3, 3), activation='relu'))
-cnn.add(layers.MaxPooling2D((2, 2)))
-cnn.add(layers.Flatten())
-cnn.add(tf.keras.layers.Dropout(0.1))
-cnn.add(layers.Dense(60, activation='relu'))
-cnn.add(tf.keras.layers.Dropout(0.1))
-cnn.add(layers.Dense(10, activation='relu'))
-cnn.add(layers.Dense(3, activation='softmax'))
-cnn.summary()
+# check the current directory to see if cnn has already been created and trained
+if os.path.exists("cnn_model"):
+    print("loading cnn model.")
+    cnn = tf.keras.models.load_model("cnn_model")
+    cnn.summary()
+else:
+    # train cnn
+    cnn = models.Sequential()
+    cnn.add(layers.Conv2D(16, (3, 3), activation='relu', input_shape=(75, 75, 1)))
+    cnn.add(layers.MaxPooling2D((2, 2)))
+    cnn.add(layers.Conv2D(48, (3, 3), activation='relu'))
+    cnn.add(layers.MaxPooling2D((2, 2)))
+    cnn.add(layers.Conv2D(84, (3, 3), activation='relu'))
+    cnn.add(layers.MaxPooling2D((2, 2)))
+    cnn.add(layers.Flatten())
+    cnn.add(tf.keras.layers.Dropout(0.1))
+    cnn.add(layers.Dense(60, activation='relu'))
+    cnn.add(tf.keras.layers.Dropout(0.1))
+    cnn.add(layers.Dense(10, activation='relu'))
+    cnn.add(layers.Dense(3, activation='softmax'))
+    cnn.summary()
 
-cnn.compile(optimizer='sgd', loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False), metrics=['accuracy'])
-# train cnn
-results = cnn.fit(train_a_X, train_a_Y, epochs=20, validation_data=(test_a_X, test_a_Y))
-# plot the classification accuracy of cnn for each epoch
-plt.plot(results.history['accuracy'], label='Training')
-plt.plot(results.history['val_accuracy'], label = 'Test')
-plt.xlabel('Epoch')
-plt.ylabel('Accuracy')
-plt.ylim([0.5, 1])
-plt.legend(loc='lower right')
-plt.show()
+    cnn.compile(optimizer='sgd', loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False), metrics=['accuracy'])
+    # train cnn
+    results = cnn.fit(train_a_X, train_a_Y, epochs=20, validation_data=(test_a_X, test_a_Y))
+    # plot the classification accuracy of cnn for each epoch
+    plt.plot(results.history['accuracy'], label='Training')
+    plt.plot(results.history['val_accuracy'], label = 'Test')
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
+    plt.ylim([0.5, 1])
+    plt.legend(loc='lower right')
+    plt.show()
+
+    # save model architecture and weights
+    cnn.save('cnn_model')
+
 # predict the target labels for unseen images and the confidence
 predictions = cnn.predict(val_X)
 for i in predictions:
