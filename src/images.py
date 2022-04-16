@@ -22,8 +22,8 @@ def get_image_file_paths_from(folder_path):
 def read_image_data(file_paths):
 	data = []
 	for f in file_paths:
+		print("loading " + f)
 		image = cv.imread(f, cv.IMREAD_GRAYSCALE)
-		# TODO: investigate function and optimal parameters
 		image = apply_edge_detection(image)
 		image = resize_and_normalize(image)
 		data.append(image)
