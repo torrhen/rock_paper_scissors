@@ -210,10 +210,11 @@ while isCameraOpen:
         isCameraOpen = False
 
         # 3. process user image input
-        x = apply_edge_detection(region)
+        # remove noise from camera image
+        x = cv.medianBlur(region, 5)
+        x = apply_edge_detection(x)
         x = resize_and_normalize(x)
-        cv.imshow("Live", x)
-        cv.waitKey(0)
+        
         # 4. predict the label of the user input using cnn
         x = tf.convert_to_tensor([x], 1)
         pred = cnn.predict(x)
